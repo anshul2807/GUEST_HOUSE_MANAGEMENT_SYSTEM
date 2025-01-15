@@ -12,7 +12,13 @@ const dummyPropertiesData = [
     "state": "Uttar Pradesh",
     "type": "Room",
     "count": "3",
-    "tenets": [{}, {}, {}]
+    "tenets": [
+      {"advance": "200",
+      "generalRent": "1000",
+      "name": "Anshul",
+      "otherCharges": "100",
+      "roomName": "101",}
+    ,{},{}]
   },
   {
     "id": 1,
