@@ -1,6 +1,5 @@
 import React, { createContext, useState } from "react";
 
-
 export const UserContext = createContext();
 
 const dummyPropertiesData = [
@@ -13,12 +12,25 @@ const dummyPropertiesData = [
     "type": "Room",
     "count": "3",
     "tenets": [
-      {"advance": "200",
-      "generalRent": "1000",
-      "name": "Anshul",
-      "otherCharges": "100",
-      "roomName": "101",}
-    ,{},{}]
+      {
+        "advance": "200",
+        "generalRent": "1000",
+        "name": "Anshul",
+        "otherCharges": "100",
+        "roomName": "101",
+        "billHistory": [
+          {
+            "date": "2025-01-23",
+            "electricReading": "1001",
+            "paymentMode": "Card",
+            "roomName": "101",
+            "roomRent": "2121",
+          }
+        ]
+      },
+      {},
+      {}
+    ]
   },
   {
     "id": 1,
@@ -27,8 +39,8 @@ const dummyPropertiesData = [
     "pincode": "221108",
     "state": "Uttar Pradesh",
     "type": "Room",
-    "count": "14",
-    "tenets": Array(14).fill({})
+    "count": "1",
+    "tenets": [{}]
   },
   {
     "id": 2,
@@ -38,10 +50,9 @@ const dummyPropertiesData = [
     "state": "Uttar Pradesh",
     "type": "Room",
     "count": "4",
-    "tenets": [{},{},{},{}]
+    "tenets": [{}, {}, {}, {}]
   }
 ];
-
 
 export const UserProvider = ({ children }) => {
   const [user, setUser] = useState({ isLogin: true });
@@ -74,6 +85,20 @@ export const UserProvider = ({ children }) => {
             return { ...property, tenets: updatedTenets };
           }
 
+          if (action?.type === "payBill") {
+            const updatedTenets = property.tenets.map((tenet, index) => {
+              if (index === action.roomNumber) {
+                const updatedBillHistory = [
+                  ...(tenet.billHistory || []),
+                  action.billHistory
+                ];
+                return { ...tenet, billHistory: updatedBillHistory };
+              }
+              return tenet;
+            });
+            return { ...property, tenets: updatedTenets };
+          }
+
           const updatedTenets = (() => {
             const currentTenets = property.tenets || [];
             const diff = propertyData.count - currentTenets.length;
@@ -81,7 +106,7 @@ export const UserProvider = ({ children }) => {
             if (diff > 0) {
               return [
                 ...currentTenets,
-                ...Array.from({ length: diff }, () => ({})),
+                ...Array.from({ length: diff }, () => ({}))
               ];
             } else if (diff < 0) {
               return currentTenets.slice(0, diff);
@@ -115,7 +140,6 @@ export const UserProvider = ({ children }) => {
       );
     }
   };
-  
 
   const findProperty = (propertyId) =>
     properties.find((property) => property.id === propertyId);
@@ -130,7 +154,7 @@ export const UserProvider = ({ children }) => {
         AddProperties,
         updateProperties,
         deleteProperty,
-        findProperty,
+        findProperty
       }}
     >
       {children}

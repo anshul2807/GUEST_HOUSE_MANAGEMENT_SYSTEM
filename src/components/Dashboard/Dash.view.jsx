@@ -39,13 +39,13 @@ const DashView = () => {
   };
 
   return (
-    <div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
+    <>
       {isNestedRoute ? (
         // Render only the nested route content
         <Outlet context={outletData}/>
       ) : (
         // Render the main content if not in the nested route
-        <>
+        <div className="container mx-auto p-6 bg-white rounded-lg shadow-md">
           <h2 className="text-2xl font-semibold text-gray-800 mb-6">
             Your Listed Properties
           </h2>
@@ -218,9 +218,9 @@ const DashView = () => {
               </div>
             </div>
           )}
-        </>
+        </div>
       )}
-    </div>
+    </>
   );
 };
 
